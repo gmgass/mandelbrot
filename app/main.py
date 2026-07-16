@@ -11,8 +11,15 @@ except ImportError as e:
     print("Erro\n")
     sys.exit(1)
 
-print("teste de ponte do Python para o Rust...\n")
-return_message = rust_motor.integration_test(-2.0, 1.0, 150)
+# Parâmetros de resolução para o teste
+WIDTH, HEIGHT = 800, 600
+MAX_ITER = 100
 
-print("\nRESPOSTA DO RUST:")
-print(return_message)
+# Executa o cálculo no Rust
+raw_bytes = rust_motor.calculate_mandelbrot(
+    WIDTH, HEIGHT, -2.0, 1.0, -1.2, 1.2, MAX_ITER
+)
+
+print("\nRESULTADO:")
+print(f"Vetor com {len(raw_bytes)} bytes do Rust.")
+print(f"Tamanho esperado de bytes: {WIDTH * HEIGHT * 3}")
