@@ -1,0 +1,12 @@
+[package]
+name = "rust_motor"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "rust_motor"
+crate-type = ["cdylib"] # para gerar o tipo certo em cada SO.
+
+
+[dependencies]
+pyo3 = {version = "0.23", features = ["extension-module"]}
