@@ -1,5 +1,8 @@
 # Fractal de Mandelbrot: Rust e Python
+**Autor: Gustavo Gass**
+
 Projeto desenvolvido como exercício de integração entre linguagens distintas para a disciplina de Conceitos de Linguagem de Programação. Consiste na utilização de **Rust** para cálculo do **Conjunto de Mandelbrot** e **Python (pygame)** para interface gráfica.
+
 
 ## Estrutura do Repositório
 *   `src/lib.rs`: Código fonte em Rust, responsável pelo cálculo matemático do fractal.
