@@ -1,4 +1,5 @@
 use pyo3::prelude::*;
+use rayon::prelude::*;
 
 // Função matemática do fractal de Mandelbrot (calcula número de iterações antes de escapar para o infinito)
 fn calculate_pixel(cx: f64, cy: f64, max_iter: u32) -> u32 {
@@ -23,25 +24,25 @@ fn calculate_mandelbrot(
 ) -> PyResult<Vec<u8>> { // Vetor de byte que armazena o RGB
     let mut image = vec![0; width * height * 3];
 
-    // Mapeamento pixel por pixel (Sequencial por enquanto)
-    for y in 0..height {
-        let cy = ymin + (y as f64 / height as f64) * (ymax - ymin);
+    image.par_chunks_mut(width * 3).enumerate()
+        .for_each(|(y, row)| {
+            let cy = ymin + (y as f64 / height as f64) * (ymax - ymin);
 
-        for x in 0..width {
-            let cx = xmin + (x as f64 / width as f64) * (xmax - xmin);
-            let iterations = calculate_pixel(cx, cy, max_iter);
-            let tone = if iterations == max_iter {
-                0
-            } else {
-                ((iterations as f64 / max_iter as f64) * 255.0) as u8
-            };
+            for x in 0..width {
+                let cx = xmin + (x as f64 / width as f64) * (xmax - xmin);
+                let iterations = calculate_pixel(cx, cy, max_iter);
+                let tone = if iterations == max_iter {
+                    0
+                } else {
+                    ((iterations as f64 / max_iter as f64) * 255.0) as u8
+                };
 
-            let idx = (y * width + x) * 3;
-            image[idx]     = tone;                         // Red
-            image[idx + 1] = (tone as f32 * 0.5) as u8;    // Green
-            image[idx + 2] = (tone as f32 * 0.8) as u8;    // Blue
-        }
-    }
+                let idx = x * 3;
+                row[idx] = tone;                         // Red
+                row[idx + 1] = (tone as f32 * 0.5) as u8;    // Green
+                row[idx + 2] = (tone as f32 * 0.8) as u8;    // Blue
+            }
+        });
     Ok(image) // Retorna o vetor de bytes completo para o Python
 }
 

@@ -10,3 +10,4 @@ crate-type = ["cdylib"] # para gerar o tipo certo em cada SO.
 
 [dependencies]
 pyo3 = {version = "0.23", features = ["extension-module"]}
+rayon = "1.10"
