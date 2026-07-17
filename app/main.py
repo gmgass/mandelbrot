@@ -109,7 +109,7 @@ while running:
             
             needs_redraw = True
 
-    # Só solicita o processamento do Rust se houver interação do usuário
+    # Solicita processamento apenas se houver interação do usuário
     if needs_redraw:
         fractal_image = render_mandelbrot()
         screen.blit(fractal_image, (0, 0))
